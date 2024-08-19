@@ -1,34 +1,38 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0);
+const getData = () => {
+  console.log("begin getData");
 
+  // api 호출 등 오래 걸리는 작업
+  setTimeout(() => {
+    console.log("오래 걸리는 중");
+  }, 3000);
+
+  return Math.random();
+};
+function App() {
+  // 1 - 함수가 직접 실행되므로, 렌더링 될 때마다 getData가 호출됨
+  // const [data, setData] = useState<number>(getData());
+
+  // 2 - getData 함수를 useState에 전달해서 초기화, 최초 한번만 실행됨
+  // const [data, setData] = useState<number>(getData);
+
+  // 3 - 지연 초기화를 위한 초기화 함수로 전달됨, 처음 렌더링될 때 한번만 호출됨
+  // const [data, setData] = useState<number>(() => {
+  //   return getData();
+  // });
+
+  const handleClick = () => {
+    console.log("begin handleClick");
+
+    setData((prev) => prev + 1);
+  };
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <button onClick={handleClick}>업데이트</button>
+      <p>{data}</p>
+    </div>
   );
 }
 
